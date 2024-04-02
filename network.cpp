@@ -2,6 +2,7 @@
 #include <limits>
 #include "misc.h"
 #include <fstream>
+#include <sstream>
 
 Network::Network(){
     head = NULL;
@@ -26,7 +27,7 @@ Person* Network::search(Person* searchEntry){
     // TODO: Complete this method
     Person* ptr = head;
     while (ptr != NULL){
-        if (*prt == *searchEntry){ //Assuming overloaded the equality operator for Person
+        if (*ptr == *searchEntry){ //Assuming overloaded the equality operator for Person
             return ptr; //Found person, return pointer to it
         }
         ptr = ptr->next;
