@@ -4,16 +4,16 @@
 
 #include <iostream>
 #include <string>
-// TODO: You may need to add other libraries here!
+#include <algorithm> //added
 using namespace std;
 
-
 class Contact {
-    // TODO: private or protected? Look at your children!	
+    // TODO: private or protected? Look at your children!
+protected:
 	string type;
 public:
 	virtual void print() = 0;
-    virtual string get_contact(string style="full") = 0;
+    	virtual string get_contact(string style="full") = 0;
 	virtual void set_contact() = 0;
 };
 
@@ -23,17 +23,23 @@ private:
     string email_addr;
 public:
     Email(string type, string email_addr);
-    // TODO: Complete me!
+    void print() override;
+    string get_contact(string style = "full") override;
+    void set_contact() override;
+    // TODO: Complete me! done
 };
 
 
 class Phone: public Contact{
 private:
     // TODO: modify dataType! Can int store 10 digit phone-number? 
-	dataType phone_num; 
+	string num; 
 public:
     Phone(string type, string phone_number);
-    // TODO: Complete me!
+    void print() override;
+    string get_contact(string style = "full") override;
+    void set_contact() override;
+    // TODO: Complete me! done 
 };
 
 #endif
