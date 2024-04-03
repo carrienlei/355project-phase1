@@ -19,6 +19,8 @@ Network::Network(string fileName){
 }
 
 Network::~Network(){ 
+    delete head;
+    delete tail;
 }
 
 Person* Network::search(Person* searchEntry){
@@ -42,13 +44,20 @@ Person* Network::search(string fname, string lname){
     // TODO: Complete this method
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
     Person* ptr = head;
-    while (ptr != nullptr) {
-        if (ptr->search(fname) == fname && ptr->search(lname) == lname) {
-            return ptr; // Found the person, return pointer to it
+    int i = 0;
+    Person arr[count];
+    while (ptr->next != NULL) {
+        if (ptr->fname == fname && ptr->lname == lname) {
+            arr[i] = *ptr;
+            i++;
         }
         ptr = ptr->next;
     }
-    return nullptr; // Person not found
+    Person fin[i];
+    for(int j=0; j<i; j++){
+        fin[j] = arr[i];
+    }
+    return fin;
 }
 
 
