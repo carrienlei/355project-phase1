@@ -13,13 +13,14 @@ class Network{
         int count; 
         Person* search(Person* searchEntry);
         Person* search(string fname, string lname);
-
+        
     public:
         Network();
         Network(string fileName);
         ~Network();
         void printDB();
         void loadDB();
+        void saveDB();
         void push_front(Person* newEntry);
         void push_back(Person* newEntry);
         bool remove(string fname, string lname);
