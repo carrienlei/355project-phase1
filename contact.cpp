@@ -10,6 +10,11 @@ Email::Email(string type, string email_addr){
     this->email_addr = email_addr;
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> ab637fd03fb95644dbfe32f448fe46bdf9637048
 void Email::set_contact(){
     cout << "Enter the type of email address: ";
     cin >> type;
@@ -32,6 +37,11 @@ void Email::print(){
 
 Phone::Phone(string type, string num){
 
+<<<<<<< HEAD
+=======
+Phone::Phone(string type, string num){
+
+>>>>>>> ab637fd03fb95644dbfe32f448fe46bdf9637048
     this->type = type;
 
     for (char &c : num) {
@@ -41,4 +51,8 @@ Phone::Phone(string type, string num){
         }
     }
     this->num = num;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ab637fd03fb95644dbfe32f448fe46bdf9637048

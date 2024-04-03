@@ -2,6 +2,7 @@
 #include <limits>
 #include "misc.h"
 #include <fstream>
+#include <sstream>
 
 Network::Network(){
     head = NULL;
@@ -26,7 +27,7 @@ Person* Network::search(Person* searchEntry){
     // TODO: Complete this method
     Person* ptr = head;
     while (ptr != NULL){
-        if (*prt == *searchEntry){ //Assuming overloaded the equality operator for Person
+        if (*ptr == *searchEntry){ //Assuming overloaded the equality operator for Person
             return ptr; //Found person, return pointer to it
         }
         ptr = ptr->next;
@@ -35,14 +36,14 @@ Person* Network::search(Person* searchEntry){
 }
 
 
-Person* Network::search(string fname, string lname){
+Person* Network::search(string fname, string lname, string b_date, string email, string phone){
     // New == for Person, only based on fname and lname
     // if found, returns a pointer to it, else returns NULL
     // TODO: Complete this method
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
     Person* ptr = head;
     while (ptr != NULL) {
-        if (ptr->getFirstName() == fname && ptr->getLastName() == lname) {
+        if (ptr->search(fname) == fname && ptr->search(lname) == lname) {
             return ptr; // Found the person, return pointer to it
         }
         ptr = ptr->next;
@@ -71,7 +72,7 @@ void Network::loadDB(string filename){
         // For example:
         if (getline(ss, fname, ',') && getline(ss, lname, ',') && getline(ss, bdate, ',')) {
             // Create a new Person object using the extracted information
-            Person* newPerson = new Person(fname, lname, bdate);
+            Person* newPerson = new Person(fname, lname, b_date, email, phone);
             push_back(newPerson); // Assuming push_back adds the Person to the network
         }
         else {
@@ -93,7 +94,7 @@ void Network::saveDB(string filename){
     Person* ptr = head;
     while (ptr != NULL) {
         // Write the information of each Person to the file
-        file << ptr->getFirstName() << "," << ptr->getLastName() << "," << ptr->getBirthDate() << endl;
+        file << ptr->search(fname) << "," << ptr->search(lname) << "," << ptr->search(b_date) << endl;
         ptr = ptr->next;
     }
 
@@ -153,7 +154,7 @@ bool Network::remove(string fname, string lname){
     // TODO: Complete this method
     Person* ptr = head;
     while (ptr != NULL) {
-        if (ptr->getFirstName() == fname && ptr->getLastName() == lname) {
+        if (ptr->search(fname) == fname && ptr->search(lname) == lname) {
             // Person found, remove it from the network
             if (ptr == head) {
                 // If the person to be removed is the head
