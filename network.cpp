@@ -26,29 +26,29 @@ Person* Network::search(Person* searchEntry){
     // if found, returns a pointer to it, else returns NULL
     // TODO: Complete this method
     Person* ptr = head;
-    while (ptr != NULL){
+    while (ptr != nullptr){
         if (*ptr == *searchEntry){ //Assuming overloaded the equality operator for Person
             return ptr; //Found person, return pointer to it
         }
         ptr = ptr->next;
     }
-    return NULL; //Person not found
+    return nullptr; //Person not found
 }
 
 
-Person* Network::search(string fname, string lname, string b_date, string email, string phone){
+Person* Network::search(string fname, string lname){
     // New == for Person, only based on fname and lname
     // if found, returns a pointer to it, else returns NULL
     // TODO: Complete this method
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
     Person* ptr = head;
-    while (ptr != NULL) {
+    while (ptr != nullptr) {
         if (ptr->search(fname) == fname && ptr->search(lname) == lname) {
             return ptr; // Found the person, return pointer to it
         }
         ptr = ptr->next;
     }
-    return NULL; // Person not found
+    return nullptr; // Person not found
 }
 
 
@@ -56,9 +56,9 @@ Person* Network::search(string fname, string lname, string b_date, string email,
 
 void Network::loadDB(string filename){
     // TODO: Complete this method
-    ifstream file(filename);
-    if (!file) {
-        cerr << "Error: Could not open file " << filename << endl;
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << filename << std::endl;
         return;
     }
 
@@ -66,11 +66,11 @@ void Network::loadDB(string filename){
     while (getline(file, line)) {
         // Parse the line to extract information for each Person
         stringstream ss(line);
-        string fname, lname, bdate; // Assuming these are the fields in your Person class
+        string fname, lname, b_date, email, phone; // Assuming these are the fields in your Person class
         
         // Extract data from the line using stringstream
         // For example:
-        if (getline(ss, fname, ',') && getline(ss, lname, ',') && getline(ss, bdate, ',')) {
+        if (getline(ss, fname, ',') && getline(ss, lname, ',') && getline(ss, b_date, ',') && getline(ss, email, ',') && getline(ss, phone, ',')) {
             // Create a new Person object using the extracted information
             Person* newPerson = new Person(fname, lname, b_date, email, phone);
             push_back(newPerson); // Assuming push_back adds the Person to the network
@@ -135,51 +135,33 @@ void Network::push_front(Person* newEntry){
 void Network::push_back(Person* newEntry){
     // Adds a new Person (newEntry) to the back of LL
     // TODO: Complete this method
-    if (tail == NULL) {
-        // If the network is empty, set both head and tail to the new entry
-        head = newEntry;
-        tail = newEntry;
-    } else {
-        // Otherwise, append the new entry after the current tail
+    if (tail) {
         tail->next = newEntry;
         newEntry->prev = tail;
-        tail = newEntry;
+    } 
+    tail = newEntry;
+    if(!head){
+        head = newEntry;
     }
-    // Increment the count of persons in the network
     count++;
 }
 
 
 bool Network::remove(string fname, string lname){
     // TODO: Complete this method
-    Person* ptr = head;
-    while (ptr != NULL) {
-        if (ptr->search(fname) == fname && ptr->search(lname) == lname) {
-            // Person found, remove it from the network
-            if (ptr == head) {
-                // If the person to be removed is the head
-                head = ptr->next;
-                if (head != NULL)
-                    head->prev = NULL;
-                else
-                    tail = NULL; // If the head was the only person in the list
-            } else if (ptr == tail) {
-                // If the person to be removed is the tail
-                tail = ptr->prev;
-                tail->next = NULL;
-            } else {
-                // If the person to be removed is in the middle of the list
-                ptr->prev->next = ptr->next;
-                ptr->next->prev = ptr->prev;
-            }
-            // Delete the person and decrement the count of persons in the network
-            delete ptr;
-            count--;
-            return true; // Person removed successfully
-        }
-        ptr = ptr->next;
+    Person* ptr = search(fname, lname);
+    if(ptr == nullptr){
+        return false;
     }
-    return false; // Person not found in the network
+
+    if(ptr->prev) ptr->prev->next = ptr->next;
+    if(ptr->next) ptr->nect->prev = ptr->prev;
+    if(ptr==head) head = ptr->next;
+    if(ptr==tail) tail = ptr->prev;
+
+    delete ptr;
+    count--;
+    return true;
 }
 
 
