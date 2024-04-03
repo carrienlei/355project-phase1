@@ -9,6 +9,8 @@ using namespace std;
 
 class Contact {
     // TODO: private or protected? Look at your children!
+    friend class Person;
+    friend class Network;
 protected:
 	string type;
 public:
@@ -17,29 +19,26 @@ public:
 	virtual void set_contact() = 0;
 };
 
-
 class Email: public Contact{
 private:
     string email_addr;
 public:
     Email(string type, string email_addr);
-    void print() override;
-    string get_contact(string style = "full") override;
-    void set_contact() override;
-    // TODO: Complete me! done
+    void set_contact(); 
+    string get_contact(string style="full");
+    void print();
 };
 
 
 class Phone: public Contact{
 private:
-    // TODO: modify dataType! Can int store 10 digit phone-number? 
-	string num; 
+	string phone_num; 
 public:
     Phone(string type, string phone_number);
-    void print() override;
-    string get_contact(string style = "full") override;
-    void set_contact() override;
-    // TODO: Complete me! done 
+    void set_contact();
+    string get_contact(string style = "full") ;
+    void print();
+
 };
 
 #endif
