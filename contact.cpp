@@ -31,7 +31,7 @@ void Email::print(){
 }
 
 
-Phone::Phone(string type, string num) : type(type) {
+Phone::Phone(string type, string phone_num){
     this->type = type;
     this->phone_num = phone_num;
 }
