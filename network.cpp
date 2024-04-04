@@ -65,31 +65,48 @@ Person* Network::search(string fname, string lname){
 
 void Network::loadDB(string filename){
     // TODO: Complete this method
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file " << filename << std::endl;
-        return;
+    ifstream inputfile(filename);
+    string line, fname, lname, b_date, email, phone;
+    int cnt = 0;
+    while(getline(inputFile, line)){
+        cnt++;
+    }
+    string arr[cnt];
+
+    int i = 0;
+    while(getline(inputFile, line)){
+        arr[i++] = line;
     }
 
-    string line;
-    while (getline(file, line)) {
-        // Parse the line to extract information for each Person
-        stringstream ss(line);
-        string fname, lname, b_date, email, phone; // Assuming these are the fields in your Person class
-        
-        // Extract data from the line using stringstream
-        // For example:
-        if (getline(ss, fname, ',') && getline(ss, lname, ',') && getline(ss, b_date, ',') && getline(ss, email, ',') && getline(ss, phone, ',')) {
-            // Create a new Person object using the extracted information
-            Person* newPerson = new Person(fname, lname, b_date, email, phone);
-            push_back(newPerson); // Assuming push_back adds the Person to the network
+    int pcnt = cnt/6;
+    Person *temp;
+
+    for(int j=0; j<pcnt; j++){
+        string fname = arr[j*6];
+        string lname = arr[j*6 + 1];
+        string b_date = arr[j*6 + 2];
+        string email = arr[arr[j*6 + 3];
+        string phone = arr[j*6 + 4];
+
+        Person *newP = new Person(fname, lname, b_date, email, phone);
+        if(j==0){
+            head = newP;
+            temp = newP;
+            newP->prev = NULL;
         }
-        else {
-            cerr << "Error: Invalid format in line: " << line << endl;
+        else if(j==(pcnt-1)){
+            newP->prev = temp;
+            newP->prev->next = newP;
+            newP->next = NULL;
+            tail = newP;
+        }
+        else{
+            newP->prev = temp;
+            newP->prev->next = newP;
+            temp = newP;
         }
     }
-
-    file.close();
+    inputFile.close();
 }
 
 void Network::saveDB(string filename){
@@ -164,7 +181,7 @@ bool Network::remove(string fname, string lname){
     }
 
     if(ptr->prev) ptr->prev->next = ptr->next;
-    if(ptr->next) ptr->nect->prev = ptr->prev;
+    if(ptr->next) ptr->next->prev = ptr->prev;
     if(ptr==head) head = ptr->next;
     if(ptr==tail) tail = ptr->prev;
 
@@ -291,7 +308,7 @@ void Network::showMenu(){
             Person* ptr = head;
             bool found = false;
             while (ptr != nullptr) {
-                if (ptr->getLastName() == lname) {
+                if (ptr->lname() == lname) {
                     // Print the details of the person
                     ptr->print_person();
                     found = true;
