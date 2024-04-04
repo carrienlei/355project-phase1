@@ -28,13 +28,13 @@ Person* Network::search(Person* searchEntry){
     // if found, returns a pointer to it, else returns NULL
     // TODO: Complete this method
     Person* ptr = head;
-    while (ptr != nullptr){
+    while (ptr != NULL){
         if (*ptr == *searchEntry){ //Assuming overloaded the equality operator for Person
             return ptr; //Found person, return pointer to it
         }
         ptr = ptr->next;
     }
-    return nullptr; //Person not found
+    return NULL; //Person not found
 }
 
 
