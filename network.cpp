@@ -66,7 +66,7 @@ Person* Network::search(string fname, string lname){
 void Network::loadDB(string filename){
     // TODO: Complete this method
     ifstream inputfile(filename);
-    string line, f_name, l_name, b_date, email, phone;
+    string line, f_name, l_name, birthdate, email, phone;
     int cnt = 0;
     while(getline(inputFile, line)){
         cnt++;
@@ -84,7 +84,7 @@ void Network::loadDB(string filename){
     for(int j=0; j<pcnt; j++){
         string f_name = arr[j*6];
         string _lname = arr[j*6 + 1];
-        string b_date = arr[j*6 + 2];
+        string birthdate = arr[j*6 + 2];
         string email = arr[arr[j*6 + 3];
         string phone = arr[j*6 + 4];
 
@@ -120,7 +120,7 @@ void Network::saveDB(string filename){
     Person* ptr = head;
     while (ptr != NULL) {
         // Write the information of each Person to the file
-        file << ptr->f_name << "," << ptr->l_name << "," << ptr->b_date << endl;
+        file << ptr->f_name << "," << ptr->l_name << "," << ptr->birthdate << endl;
         ptr = ptr->next;
     }
 
