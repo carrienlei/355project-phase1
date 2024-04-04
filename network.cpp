@@ -68,13 +68,13 @@ void Network::loadDB(string filename){
     ifstream inputfile(filename);
     string line, f_name, l_name, birthdate, email, phone;
     int cnt = 0;
-    while(getline(inputFile, line)){
+    while(getline(inputfile, line)){
         cnt++;
     }
     string arr[cnt];
 
     int i = 0;
-    while(getline(inputFile, line)){
+    while(getline(inputfile, line)){
         arr[i++] = line;
     }
 
@@ -85,10 +85,10 @@ void Network::loadDB(string filename){
         string f_name = arr[j*6];
         string _lname = arr[j*6 + 1];
         string birthdate = arr[j*6 + 2];
-        string email = arr[arr[j*6 + 3];
+        string email = arr[j*6 + 3];
         string phone = arr[j*6 + 4];
 
-        Person *newP = new Person(fname, lname, b_date, email, phone);
+        Person *newP = new Person(f_name, l_name, birthdate, email, phone);
         if(j==0){
             head = newP;
             temp = newP;
@@ -106,7 +106,7 @@ void Network::loadDB(string filename){
             temp = newP;
         }
     }
-    inputFile.close();
+    inputfile.close();
 }
 
 void Network::saveDB(string filename){
