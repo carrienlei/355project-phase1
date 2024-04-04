@@ -11,7 +11,6 @@ This repository contains C++ code snippets for a simple network management syste
 - `network.h`: Defines the `Network` class responsible for managing the network of persons.
 - `misc.h`: Contains miscellaneous helper functions.
 - `date.h`: Defines the `Date` class to represent date information.
-- `main.cpp`: Implements the main program logic, including user interactions and menu options.
 
 #### `person.h`:
 
