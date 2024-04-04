@@ -19,8 +19,8 @@ class Network{
         Network(string fileName);
         ~Network();
         void printDB();
-        void loadDB();
-        void saveDB();
+        void loadDB(string fileName);
+        void saveDB(string fileName);
         void push_front(Person* newEntry);
         void push_back(Person* newEntry);
         bool remove(string fname, string lname);
