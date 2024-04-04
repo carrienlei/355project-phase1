@@ -176,7 +176,7 @@ void Network::push_back(Person* newEntry){
 bool Network::remove(string fname, string lname){
     // TODO: Complete this method
     Person* ptr = search(fname, lname);
-    if(ptr == nullptr){
+    if(ptr == NULL){
         return false;
     }
 
