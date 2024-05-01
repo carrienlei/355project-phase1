@@ -193,7 +193,8 @@ void Network::showMenu() {
     if (cin >> opt) {
       cin.clear();
       cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    } else {
+    } 
+    else {
       cin.clear();
       cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       cout << "Wrong option! " << endl;
@@ -225,8 +226,8 @@ void Network::showMenu() {
       // If file with name FILENAME does not exist:
       cout << "File FILENAME does not exist!" << endl;
       // If file is loaded successfully, also print the count of people in it:
-      cout << "Network loaded from " << fileName << " with " << count
-           << " people \n";
+      cout << "Network loaded from " << fileName << " with " << count << " people \n";
+    }
         
     else if (opt == 3) {
       // TODO: Complete me!
@@ -238,45 +239,45 @@ void Network::showMenu() {
          push_front(person);
       }
     }
-    } 
-else if (opt == 4) {
-      // TODO: Complete me!
-      // if found, cout << "Remove Successful! \n";
-      // if not found: cout << "Person not found! \n";
-      cout << "Removing a person \n";
-      cout << "First name: ";
-      getline(cin,fname);      
-      cout << "Last name: ";
-      getline(cin,lname);
-      remove(fname,lname);
-  }
-      else if (opt==5){
-            // TODO: Complete me!
-            // print the people with the given last name
-            // if not found: cout << "Person not found! \n";
-            cout << "Print people with last name \n";
-            cout << "Last name: ";
-            getline(cin,lname);
+    
+    else if (opt == 4) {
+        // TODO: Complete me!
+        // if found, cout << "Remove Successful! \n";
+        // if not found: cout << "Person not found! \n";
+        cout << "Removing a person \n";
+        cout << "First name: ";
+        getline(cin,fname);      
+        cout << "Last name: ";
+        getline(cin,lname);
+        remove(fname,lname);
+    }
+    else if (opt==5){
+        // TODO: Complete me!
+        // print the people with the given last name
+        // if not found: cout << "Person not found! \n";
+        cout << "Print people with last name \n";
+        cout << "Last name: ";
+        getline(cin,lname);
 
-            bool found = false;
-            Person* person = head;
-            while(person != NULL){
-                if(person->l_name == lname) {
-                    person-> print_person();
-                    cout << endl;
-                    found = true;
-                }
-                person = person -> next;
+        bool found = false;
+        Person* person = head;
+        while(person != NULL){
+            if(person->l_name == lname) {
+                person-> print_person();
+                cout << endl;
+                found = true;
             }
-
-            if(!found){
-                cout << "Person not found! \n";
-            }
+            person = person -> next;
         }
+
+        if(!found){
+            cout << "Person not found! \n";
+        }
+    }
         
-        else
-            cout << "Nothing matched!\n";
-        
+    else{
+        cout << "Nothing matched!\n";
+    
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         cout << "\n\nPress Enter key to go back to main menu ... ";
@@ -284,4 +285,5 @@ else if (opt == 4) {
         std::getline (std::cin, temp);
         cout << "\033[2J\033[1;1H";
     }
+}
 }
