@@ -5,6 +5,9 @@
 #include "date.h"
 #include "contact.h"
 #include "fstream"
+#include <vector>
+using namespace std;
+
 class Person{
     friend class Network;
 
@@ -14,6 +17,7 @@ private:
 	Date *birthdate;
     Email *email;
     Phone *phone;
+    vector<Person*> myfriends;
     // the following to attributes are used in the linked list.
     Person* next;
     Person* prev;
@@ -28,6 +32,7 @@ public:
 	void set_person(string filename);
     bool operator==(const Person& rhs);
     bool operator!=(const Person& rhs);
+    void makeFriend(Person* newFriend);
 };
 
 
