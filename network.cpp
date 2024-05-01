@@ -214,73 +214,40 @@ void Network::showMenu() {
       cin >> fileName;
       saveDB(fileName);  
       cout << "Network saved in " << fileName << endl;
-    } else if (opt == 2) {
-            // TODO: Complete me!
-            cout << "Loading network database \n";
-            // TODO: print all the files in this same directory that have "networkDB.txt" format
-            // print format: one filename one line.
-            // This step just shows all the available .txt file to load.
-            string path = "."; // Current directory
-            string extension = ".txt";
-             namespace fs = std::filesystem;
-
-            // Get the current directory
-            fs::path currentDir = fs::current_path();
-
-            // Iterate over the files in the directory
-            for (const auto& entry : fs::directory_iterator(currentDir)) {
-                if (entry.is_regular_file() && entry.path().extension() == ".txt") {
-                    std::cout << entry.path().filename().string() << std::endl;
-                }
-            }
-
-            // Iterate over the directory entries
-
-            // for (const auto& entry : std::filesystem::directory_iterator(path)) {
-            //     // Check if the entry is a file and has the specified extension
-            //     if (entry.is_regular_file() && entry.path().extension() == extension) {
-            //         cout << entry.path().filename() << endl;
-            //     }
-            // }
-            cout << "Enter the name of the load file: "; 
-            cin >> fileName;
+    } 
+    else if (opt == 2) {
+      // TODO: Complete me!
+      cout << "Loading network database \n";
+      // TODO: print all the files in this same directory that have
+      // "networkDB.txt" format print format: one filename one line. This step
+      // just shows all the available .txt file to load.
+      cout << "Enter the name of the load file: ";
+      // If file with name FILENAME does not exist:
+      cin >> fileName;
             //setting found automatically to false
             //only if file is found do we set to true
-            bool found = false;
+      bool found = false;
             //std::filesystem::path currentDir = std::filesystem::current_path();
-            for (const auto& entry : std::filesystem::directory_iterator(currentDir)) {
+      for (const auto& entry : std::filesystem::directory_iterator(currentDir)) {
                     // Check if the entry is a file and has the specified extension
-                    if (entry.is_regular_file() && entry.path().extension() == extension) {
-                        if (entry.path().filename() == fileName) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-            
+          if (entry.is_regular_file() && entry.path().extension() == extension) {
+              if (entry.path().filename() == fileName) {
+                  found = true;
+                  break:
+              }
+          }
+      }
+      if(!found){
+          // If file with name FILENAME does not exist: 
+          cout << "File FILENAME does not exist!" << endl;
+      }
+
+      // If file is loaded successfully, also print the count of people in it:
+      cout << "Network loaded from " << fileName << " with " << count
+           << " people \n";
 
 
-            // for (const auto& entry : std::filesystem::directory_iterator(path)) {
-            //     // Check if the entry is a file and has the specified extension
-            //     if (entry.is_regular_file() && entry.path().extension() == extension) {
-            //         if(entry.path().filename() == fileName){
-            //             found = true;
-            //             break;
-            //         }
-            //     }
-            // }
-            if(!found){
-                // If file with name FILENAME does not exist: 
-                cout << "File " << fileName << " does not exist!" << endl;
-            }
-            else{
-                loadDB(fileName);
-                // If file is loaded successfully, also print the count of people in it: 
-                cout << "Network loaded from " << fileName << " with " << count << " people \n";
-            }
-            
-        }
-    } 
+        
     else if (opt == 3) {
       // TODO: Complete me!
       // TODO: use push_front, and not push_back
@@ -290,8 +257,7 @@ void Network::showMenu() {
       if(search(person) == NULL){
          push_front(person);
       }
-      }
-        
+    }
     } 
 else if (opt == 4) {
       // TODO: Complete me!
