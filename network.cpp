@@ -20,7 +20,7 @@ Network::Network(string fileName){
 
 Network::~Network(){ 
     Person* now = head;
-    while(current != NULL){
+    while(now != NULL){
         Person* temp = now -> next;
         delete now;
         now = temp;
@@ -50,7 +50,7 @@ Person* Network::search(string fname, string lname){
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
     Person* ptr = head;
     while(ptr != NULL){
-        if(ptr->f_name == fname && found->l_name == lname) return found;
+        if(ptr->f_name == fname && ptr->l_name == lname) return ptr;
         ptr = ptr -> next;
     }
     return NULL;
@@ -62,7 +62,7 @@ void Network::loadDB(string filename){
     ifstream inputfile(filename);
     string f_name, l_name, birthdate, email, phone;
     int cnt = 0;
-    while(getline(input file, f_name)){
+    while(getline(inputfile, f_name)){
         getline(inputfile,l_name);
         getline(inputfile,birthdate);
         getline(inputfile,email);
@@ -77,19 +77,19 @@ void Network::loadDB(string filename){
 
 void Network::saveDB(string filename){
     // TODO: Complete this method
-    ofstream file(filename);
+    ofstream outfile(filename);
 
     Person* person = head;
     while(person != NULL){
-        outFile << person->l_name <<", " << person->f_name << endl;
-        outFile << person->birthdate->get_date("Month D, YYYY") << endl;
-        outFile << person->phone->get_contact("full") << endl;
-        outFile << person->email->get_contact("full") << endl;
-        outFile << "--------------------" <<endl;
+        outfile << person->l_name <<", " << person->f_name << endl;
+        //outfile << person->birthdate->get_date("Month D, YYYY") << endl;
+        outfile << person->phone->get_contact("full") << endl;
+        outfile << person->email->get_contact("full") << endl;
+        outfile << "--------------------" <<endl;
         person = person->next;
     }
 
-    outFile.close();
+    outfile.close();
 
 }
 
@@ -142,7 +142,7 @@ void Network::push_back(Person* newEntry){
 
 bool Network::remove(string fname, string lname){
     // TODO: Complete this method
-    Person* ptr = search(f_name, l_name);
+    Person* ptr = search(fname, lname);
     if(ptr == NULL) return false;
 
     Person* prev = ptr->prev;
