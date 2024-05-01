@@ -165,7 +165,6 @@ void Network::showMenu() {
 
     string fname, lname, fileName, bdate;
     cout << "\033[2J\033[1;1H";
-
     if (opt == 1) {
       cout << "Saving network database \n";
       cout << "Enter the name of the save file: ";
@@ -174,45 +173,74 @@ void Network::showMenu() {
       cout << "Network saved in " << fileName << endl;
     } 
     else if (opt == 2) {
-      cout << "Loading network database \n";
-      cout << "Enter the name of the load file: ";
-      cout << "File FILENAME does not exist!" << endl;
-    }
-    else if (opt == 3) {
-      cout << "Adding a new person \n";
-      Person* person = new Person();
-      if(search(person) == NULL){
-         push_front(person);
-      }
-    }
-    else if (opt == 4) {
-        cout << "Removing a person \n";
-        cout << "First name: ";
-        getline(cin,fname);      
-        cout << "Last name: ";
-        getline(cin,lname);
-        remove(fname,lname);
-    }
-    else if (opt==5){
-        cout << "Print people with last name \n";
-        cout << "Last name: ";
-        getline(cin,lname);
+            // TODO: Complete me!
+            cout << "Loading network database \n";
+            // TODO: print all the files in this same directory that have "networkDB.txt" format
+            // print format: one filename one line.
+            // This step just shows all the available .txt file to load.
+            cout << "Enter the name of the load file: "; 
+            cin >> fileName;
 
-        bool found = false;
-        Person* person = head;
-        while(person != NULL){
-            if(person->l_name == lname) {
-                person-> print_person();
-                cout << endl;
-                found = true;
+            ifstream file(fileName);
+
+            if(file){
+                loadDB(fileName);
+                            // If file is loaded successfully, also print the count of people in it: 
+                cout << "Network loaded from " << fileName << " with " << count << " people \n";
             }
-            person = person -> next;
+            else{
+                // If file with name FILENAME does not exist: 
+                cout << "File FILENAME does not exist!" << endl;
+            }
         }
+        else if (opt == 3) {
+        cout << "Adding a new person \n";
+        Person* person = new Person();
+        if(search(person) == NULL){
+            push_front(person);
+        }
+        }
+        else if (opt == 4) {
+            // TODO: Complete me!
+            // if found, cout << "Remove Successful! \n";
+            // if not found: cout << "Person not found! \n";
+            cout << "Removing a person \n";
+            cout << "First name: ";
+            cin >> fname;
+            cout << "Last name: ";
+            cin >> lname;
 
-        if(!found){
-            cout << "Person not found! \n";
+            if(search(fname, lname) == NULL){
+                cout << "Person not found! \n";
+            }
+            else{
+                remove(fname, lname);
+            }
         }
-    }
+        else if (opt==5){
+
+            // TODO: Complete me!
+            // print the people with the given last name
+            // if not found: cout << "Person not found! \n";
+            cout << "Print people with last name \n";
+            cout << "Last name: ";
+            cin >> lname;
+
+            Person* ptr = head;
+            int lastCount = 0;
+
+            while(ptr != NULL){
+                if(ptr->l_name == lname){
+                    ptr->print_person();
+                    lastCount++;
+                }
+                ptr=ptr->next;
+            }
+            if(!lastCount){
+                cout << "Person not found! \n";
+            }
+        }
+        
     else if (opt==6){
         cout << "Make friends\n";
         cout << "Person 1\n";
