@@ -95,7 +95,7 @@ void Person::print_person() {
     this->phone->print(); // Assuming a print method exists
 }
 
-void Person::makeFriend(Person* newFriend){
-    myfriends.push_back(newFriend);
-    newFriend->myfriends.push_back(this);
+void Person::makeFriend(Person* newFriend) {
+    myfriends.push_back(newFriend);  // Add newFriend to the current person's friend list
+    newFriend->myfriends.push_back(this);  // Add the current person to newFriend's friend list
 }
