@@ -94,3 +94,8 @@ void Person::print_person() {
     this->email->print(); // Assuming a print method exists
     this->phone->print(); // Assuming a print method exists
 }
+
+void Person::makeFriend(Person* newFriend){
+    myfriends.push_back(newFriend);
+    newFriend->myfriends.push_back(this);
+}

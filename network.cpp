@@ -239,9 +239,13 @@ void Network::showMenu() {
             continue;
         }
 
+        // Make them friends
+        person1->makeFriend(person2);
+        person2->makeFriend(person1);
+
         // Print the information of both persons
         cout << person1->l_name << ", " << person1->f_name << endl;
-        cout << person1->birthdate << endl;
+        cout << person1->birthdate<< endl;
         cout << "Phone (Cell): " << person1->phone->get_contact("full") << endl;
         cout << "Email (USC): " << person1->email->get_contact("full") << endl << endl;
 
