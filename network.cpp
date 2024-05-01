@@ -272,14 +272,16 @@ void Network::showMenu() {
             if(!found){
                 // If file with name FILENAME does not exist: 
                 cout << "File " << fileName << " does not exist!" << endl;
-            }else{
+            }
+            else{
                 loadDB(fileName);
                 // If file is loaded successfully, also print the count of people in it: 
                 cout << "Network loaded from " << fileName << " with " << count << " people \n";
             }
             
         }
-    } else if (opt == 3) {
+    } 
+    else if (opt == 3) {
       // TODO: Complete me!
       // TODO: use push_front, and not push_back
       // Add a new Person ONLY if it does not exists!
@@ -290,7 +292,8 @@ void Network::showMenu() {
       }
       }
         
-    } else if (opt == 4) {
+    } 
+else if (opt == 4) {
       // TODO: Complete me!
       // if found, cout << "Remove Successful! \n";
       // if not found: cout << "Person not found! \n";
