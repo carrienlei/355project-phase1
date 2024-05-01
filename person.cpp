@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "misc.h"
 // Assuming Date, Email, and Phone classes are fully defined elsewhere
 
 Person::Person() {
@@ -88,11 +89,20 @@ bool Person::operator!=(const Person& rhs) {
 }
 
 void Person::print_person() {
-    // Assuming Person has f_name, l_name members, and Date, Email, Phone classes have print() or similar methods
+    // Print the person's information
     std::cout << this->l_name << ", " << this->f_name << std::endl;
     this->birthdate->print_date("Month D, YYYY"); // Format assumed, adjust as necessary
     this->email->print(); // Assuming a print method exists
     this->phone->print(); // Assuming a print method exists
+
+    // Print information of friends
+    if (!myfriends.empty()) {
+        std::cout << "Friends:" << std::endl;
+        for (Person* friendPtr : myfriends) {
+            std::cout << "    " << codeName(friendPtr->f_name, friendPtr->l_name)
+                      << " (" << friendPtr->f_name << " " << friendPtr->l_name << ")" << std::endl;
+        }
+    }
 }
 
 void Person::makeFriend(Person* newFriend) {
