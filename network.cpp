@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <string>
 
+using namespace std;
 
 Network::Network(){
     head = NULL;
@@ -15,82 +16,93 @@ Network::Network(){
 
 
 Network::Network(string fileName){
-    // TODO: complete this method! (done)
+    // TODO: complete this method!
     // Implement it in one single line!
     // You may need to implement the load method before this!
     loadDB(fileName);
 }
 
-Network::~Network(){
-    // deallocate linked list 
-    // (done)
-    Person* current = head;
-    while(current != NULL){
-        Person* temp = current -> next;
-        delete current;
-        current = temp;
-    }
+Network::~Network(){ 
 }
 
 Person* Network::search(Person* searchEntry){
     // Searches the Network for searchEntry
-    // if found, returns a pointer to it, else returns NULL 
-    // (done)
-    Person* found = head;
-    while(found != NULL){
-        if(*found == *searchEntry) return found;
-        found = found -> next;
+    // if found, returns a pointer to it, else returns NULL
+    // TODO: Complete this method
+    Person* ptr = head;
+    while (ptr != NULL){
+        if (*ptr == *searchEntry){ //Assuming overloaded the equality operator for Person
+            return ptr; //Found person, return pointer to it
+        }
+        ptr = ptr->next;
     }
-    return NULL;
+    return NULL; //Person not found
 }
 
 
 Person* Network::search(string fname, string lname){
     // New == for Person, only based on fname and lname
     // if found, returns a pointer to it, else returns NULL
-    // TODO: Complete this method (done)
+    // TODO: Complete this method
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
-    Person* found = head;
-    while(found != NULL){
-        if(found->f_name == fname && found->l_name == lname) return found;
-        found = found -> next;
+    Person* ptr = head;
+    while (ptr != NULL) {
+        if (ptr->getFirstName() == fname && ptr->getLastName() == lname) {
+            return ptr; // Found the person, return pointer to it
+        }
+        ptr = ptr->next;
     }
-    return NULL;
+    return NULL; // Person not found
 }
+
+
+
 
 void Network::loadDB(string filename){
     // TODO: Complete this method
-    ifstream inFile(filename); 
-    string fname,lname,birthdate,email,phone;
-    while(getline(inFile, fname)){
-        getline(inFile,lname);
-        getline(inFile,birthdate);
-        getline(inFile,email);
-        getline(inFile,phone);
-        Person* person = new Person(fname,lname,birthdate,email,phone);
-        push_back(person);
-        //people separated by "--------------------" string
-        getline(inFile, fname);
+    ifstream file(filename);
+    if (!file) {
+        cerr << "Error: Could not open file " << filename << endl;
+        return;
     }
-    inFile.close();
+
+    string line;
+    while (getline(file, line)) {
+        // Parse the line to extract information for each Person
+        stringstream ss(line);
+        string fname, lname, bdate; // Assuming these are the fields in your Person class
+        
+        // Extract data from the line using stringstream
+        // For example:
+        if (getline(ss, fname, ',') && getline(ss, lname, ',') && getline(ss, bdate, ',')) {
+            // Create a new Person object using the extracted information
+            Person* newPerson = new Person(fname, lname, bdate);
+            push_back(newPerson); // Assuming push_back adds the Person to the network
+        }
+        else {
+            cerr << "Error: Invalid format in line: " << line << endl;
+        }
+    }
+
+    file.close();
 }
 
 void Network::saveDB(string filename){
     // TODO: Complete this method
-    ofstream outFile(filename); 
-
-    Person* person = head;
-    while(person != NULL){
-        outFile << person->l_name <<", " << person->f_name << endl;
-        outFile << person->birthdate->get_date("Month D, YYYY") << endl;
-        outFile << person->phone->get_contact("full") << endl;
-        outFile << person->email->get_contact("full") << endl;
-        outFile << "--------------------" <<endl;
-        person = person->next;
+    ofstream file(filename);
+    if (!file) {
+        cerr << "Error: Could not create file " << filename << endl;
+        return;
     }
 
-    outFile.close();
+    Person* ptr = head;
+    while (ptr != NULL) {
+        // Write the information of each Person to the file
+        file << ptr->getFirstName() << "," << ptr->getLastName() << "," << ptr->getBirthDate() << endl;
+        ptr = ptr->next;
+    }
 
+    file.close();
 }
 
 
@@ -127,48 +139,51 @@ void Network::push_front(Person* newEntry){
 void Network::push_back(Person* newEntry){
     // Adds a new Person (newEntry) to the back of LL
     // TODO: Complete this method
-    newEntry->next = NULL;
-    newEntry->prev = tail;
-
-    if (tail != NULL)
-        tail->next = newEntry;
-    else
+    if (tail == NULL) {
+        // If the network is empty, set both head and tail to the new entry
         head = newEntry;
-    
-    tail = newEntry;
+        tail = newEntry;
+    } else {
+        // Otherwise, append the new entry after the current tail
+        tail->next = newEntry;
+        newEntry->prev = tail;
+        tail = newEntry;
+    }
+    // Increment the count of persons in the network
     count++;
 }
 
 
 bool Network::remove(string fname, string lname){
-    // TODO: Complete this method (done)
-    Person* personToRemove = search(fname, lname);
-    if(personToRemove == NULL) return false;
-
-    Person* prev = personToRemove->prev;
-    Person* next = personToRemove->next;
-        
-    // item was first 
-    if(prev == NULL){
-        head = next;
-        next->prev = NULL;
+    // TODO: Complete this method
+    Person* ptr = head;
+    while (ptr != NULL) {
+        if (ptr->getFirstName() == fname && ptr->getLastName() == lname) {
+            // Person found, remove it from the network
+            if (ptr == head) {
+                // If the person to be removed is the head
+                head = ptr->next;
+                if (head != NULL)
+                    head->prev = NULL;
+                else
+                    tail = NULL; // If the head was the only person in the list
+            } else if (ptr == tail) {
+                // If the person to be removed is the tail
+                tail = ptr->prev;
+                tail->next = NULL;
+            } else {
+                // If the person to be removed is in the middle of the list
+                ptr->prev->next = ptr->next;
+                ptr->next->prev = ptr->prev;
+            }
+            // Delete the person and decrement the count of persons in the network
+            delete ptr;
+            count--;
+            return true; // Person removed successfully
+        }
+        ptr = ptr->next;
     }
-    // item was last 
-    if(next == NULL){
-        tail = prev;
-        prev->next = NULL;
-    }
-    if(prev != NULL && next != NULL){
-        //the person to delete's previous become the next one's previous and same for the next becoming the next of the previous
-        prev->next = next;
-        next-> prev = prev;
-    }
-
-    //remove the person from memory
-    delete personToRemove;
-    count--;
-
-    return true;
+    return false; // Person not found in the network
 }
 
 
