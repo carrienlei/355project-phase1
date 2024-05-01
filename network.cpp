@@ -2,11 +2,7 @@
 #include <limits>
 #include "misc.h"
 #include <fstream>
-#include <iostream>
-#include <filesystem>
-#include <string>
-
-using namespace std;
+#include <sstream>
 
 Network::Network(){
     head = NULL;
@@ -23,7 +19,14 @@ Network::Network(string fileName){
 }
 
 Network::~Network(){ 
+    Person* now = head;
+    while(current != NULL){
+        Person* temp = now -> next;
+        delete now;
+        now = temp;
+    }
 }
+
 
 Person* Network::search(Person* searchEntry){
     // Searches the Network for searchEntry
@@ -46,63 +49,48 @@ Person* Network::search(string fname, string lname){
     // TODO: Complete this method
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly. 
     Person* ptr = head;
-    while (ptr != NULL) {
-        if (ptr->getFirstName() == fname && ptr->getLastName() == lname) {
-            return ptr; // Found the person, return pointer to it
-        }
-        ptr = ptr->next;
+    while(ptr != NULL){
+        if(ptr->f_name == fname && found->l_name == lname) return found;
+        ptr = ptr -> next;
     }
-    return NULL; // Person not found
+    return NULL;
 }
-
-
 
 
 void Network::loadDB(string filename){
     // TODO: Complete this method
-    ifstream file(filename);
-    if (!file) {
-        cerr << "Error: Could not open file " << filename << endl;
-        return;
+    ifstream inputfile(filename);
+    string f_name, l_name, birthdate, email, phone;
+    int cnt = 0;
+    while(getline(input file, f_name)){
+        getline(inputfile,l_name);
+        getline(inputfile,birthdate);
+        getline(inputfile,email);
+        getline(inputfile,phone);
+        Person* person = new Person(f_name,l_name,birthdate,email,phone);
+        push_back(person);
+        //people separated by "--------------------" string
+        getline(inputfile, f_name);
     }
-
-    string line;
-    while (getline(file, line)) {
-        // Parse the line to extract information for each Person
-        stringstream ss(line);
-        string fname, lname, bdate; // Assuming these are the fields in your Person class
-        
-        // Extract data from the line using stringstream
-        // For example:
-        if (getline(ss, fname, ',') && getline(ss, lname, ',') && getline(ss, bdate, ',')) {
-            // Create a new Person object using the extracted information
-            Person* newPerson = new Person(fname, lname, bdate);
-            push_back(newPerson); // Assuming push_back adds the Person to the network
-        }
-        else {
-            cerr << "Error: Invalid format in line: " << line << endl;
-        }
-    }
-
-    file.close();
+    inputfile.close();
 }
 
 void Network::saveDB(string filename){
     // TODO: Complete this method
     ofstream file(filename);
-    if (!file) {
-        cerr << "Error: Could not create file " << filename << endl;
-        return;
+
+    Person* person = head;
+    while(person != NULL){
+        outFile << person->l_name <<", " << person->f_name << endl;
+        outFile << person->birthdate->get_date("Month D, YYYY") << endl;
+        outFile << person->phone->get_contact("full") << endl;
+        outFile << person->email->get_contact("full") << endl;
+        outFile << "--------------------" <<endl;
+        person = person->next;
     }
 
-    Person* ptr = head;
-    while (ptr != NULL) {
-        // Write the information of each Person to the file
-        file << ptr->getFirstName() << "," << ptr->getLastName() << "," << ptr->getBirthDate() << endl;
-        ptr = ptr->next;
-    }
+    outFile.close();
 
-    file.close();
 }
 
 
@@ -139,216 +127,117 @@ void Network::push_front(Person* newEntry){
 void Network::push_back(Person* newEntry){
     // Adds a new Person (newEntry) to the back of LL
     // TODO: Complete this method
-    if (tail == NULL) {
-        // If the network is empty, set both head and tail to the new entry
-        head = newEntry;
-        tail = newEntry;
-    } else {
-        // Otherwise, append the new entry after the current tail
+    newEntry->next = NULL;
+    newEntry->prev = tail;
+
+    if (tail != NULL)
         tail->next = newEntry;
-        newEntry->prev = tail;
-        tail = newEntry;
-    }
-    // Increment the count of persons in the network
+    else
+        head = newEntry;
+    
+    tail = newEntry;
     count++;
 }
 
 
 bool Network::remove(string fname, string lname){
     // TODO: Complete this method
-    Person* ptr = head;
-    while (ptr != NULL) {
-        if (ptr->getFirstName() == fname && ptr->getLastName() == lname) {
-            // Person found, remove it from the network
-            if (ptr == head) {
-                // If the person to be removed is the head
-                head = ptr->next;
-                if (head != NULL)
-                    head->prev = NULL;
-                else
-                    tail = NULL; // If the head was the only person in the list
-            } else if (ptr == tail) {
-                // If the person to be removed is the tail
-                tail = ptr->prev;
-                tail->next = NULL;
-            } else {
-                // If the person to be removed is in the middle of the list
-                ptr->prev->next = ptr->next;
-                ptr->next->prev = ptr->prev;
-            }
-            // Delete the person and decrement the count of persons in the network
-            delete ptr;
-            count--;
-            return true; // Person removed successfully
-        }
-        ptr = ptr->next;
+    Person* ptr = search(fname, lname);
+    if(ptr == nullptr){
+        return false;
     }
-    return false; // Person not found in the network
+
+    if(ptr->prev) ptr->prev->next = ptr->next;
+    if(ptr->next) ptr->next->prev = ptr->prev;
+    if(ptr==head) head = ptr->next;
+    if(ptr==tail) tail = ptr->prev;
+
+    delete ptr;
+    count--;
+    return true;
 }
 
 
-void Network::showMenu(){
-    // TODO: Complete this method!
-    // All the prompts are given to you, 
-    // You should add code before, between and after prompts!
+void Network::showMenu() {
+  // TODO: Complete this method!
+  // All the prompts are given to you,
+  // You should add code before, between and after prompts!
 
-    int opt;
-    while(1){
-        cout << "\033[2J\033[1;1H";
-        printMe("banner"); // from misc library
+  int opt;
+  while (1) {
+    cout << "\033[2J\033[1;1H";
+    printMe("banner"); // from misc library
 
-        cout << "Select from below: \n";
-        cout << "1. Save network database \n";
-        cout << "2. Load network database \n";
-        cout << "3. Add a new person \n";
-        cout << "4. Remove a person \n";
-        cout << "5. Print people with last name  \n";
-        cout << "\nSelect an option ... ";
-        
-        if (cin >> opt) {
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        } else {
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            cout << "Wrong option! " << endl;
-            return;
-        }
-        
-        // You may need these variables! Add more if you want!
-        string fname, lname, fileName, bdate;
-        cout << "\033[2J\033[1;1H";
+    cout << "Select from below: \n";
+    cout << "1. Save network database \n";
+    cout << "2. Load network database \n";
+    cout << "3. Add a new person \n";
+    cout << "4. Remove a person \n";
+    cout << "5. Print people with last name  \n";
+    cout << "\nSelect an option ... ";
 
-        if (opt==1){
-            // TODO: Complete me! (done)
-            cout << "Saving network database \n";
-            cout << "Enter the name of the save file: ";
-            // Save the network database into the file with the given name,
-            // with each person saved in the format the save as printing out the person info,
-            // and people are delimited similar to "networkDB.txt" format
-            cin >> fileName;
-            saveDB(fileName);
-            cout << "Network saved in " << fileName << endl;
-        }
-        else if (opt==2){
-            // TODO: Complete me!
-            cout << "Loading network database \n";
-            // TODO: print all the files in this same directory that have "networkDB.txt" format
-            // print format: one filename one line.
-            // This step just shows all the available .txt file to load.
-            string path = "."; // Current directory
-            string extension = ".txt";
-             namespace fs = std::filesystem;
-
-            // Get the current directory
-            fs::path currentDir = fs::current_path();
-
-            // Iterate over the files in the directory
-            for (const auto& entry : fs::directory_iterator(currentDir)) {
-                if (entry.is_regular_file() && entry.path().extension() == ".txt") {
-                    std::cout << entry.path().filename().string() << std::endl;
-                }
-            }
-
-            // Iterate over the directory entries
-
-            // for (const auto& entry : std::filesystem::directory_iterator(path)) {
-            //     // Check if the entry is a file and has the specified extension
-            //     if (entry.is_regular_file() && entry.path().extension() == extension) {
-            //         cout << entry.path().filename() << endl;
-            //     }
-            // }
-            cout << "Enter the name of the load file: "; 
-            cin >> fileName;
-            //setting found automatically to false
-            //only if file is found do we set to true
-            bool found = false;
-            //std::filesystem::path currentDir = std::filesystem::current_path();
-            for (const auto& entry : std::filesystem::directory_iterator(currentDir)) {
-                    // Check if the entry is a file and has the specified extension
-                    if (entry.is_regular_file() && entry.path().extension() == extension) {
-                        if (entry.path().filename() == fileName) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-            
-
-
-            // for (const auto& entry : std::filesystem::directory_iterator(path)) {
-            //     // Check if the entry is a file and has the specified extension
-            //     if (entry.is_regular_file() && entry.path().extension() == extension) {
-            //         if(entry.path().filename() == fileName){
-            //             found = true;
-            //             break;
-            //         }
-            //     }
-            // }
-            if(!found){
-                // If file with name FILENAME does not exist: 
-                cout << "File " << fileName << " does not exist!" << endl;
-            }else{
-                loadDB(fileName);
-                // If file is loaded successfully, also print the count of people in it: 
-                cout << "Network loaded from " << fileName << " with " << count << " people \n";
-            }
-            
-        }
-        else if (opt == 3){
-            // TODO: Complete me!(done)
-            // TODO: use push_front, and not push_back 
-            // Add a new Person ONLY if it does not exists!
-            cout << "Adding a new person \n";
-            Person* person = new Person();
-            if(search(person) == NULL){
-                push_front(person);
-            }
-        }
-        else if (opt == 4){
-            // TODO: Complete me!(done)
-            // if found, cout << "Remove Successful! \n";
-            // if not found: cout << "Person not found! \n";
-            cout << "Removing a person \n";
-            cout << "First name: ";
-            getline(cin,fname);
-            cout << "Last name: ";
-            getline(cin,lname);
-
-            remove(fname,lname);
-        }
-        else if (opt==5){
-            // TODO: Complete me!
-            // print the people with the given last name
-            // if not found: cout << "Person not found! \n";
-            cout << "Print people with last name \n";
-            cout << "Last name: ";
-            getline(cin,lname);
-
-            bool found = false;
-            Person* person = head;
-            while(person != NULL){
-                if(person->l_name == lname) {
-                    person-> print_person();
-                    cout << endl;
-                    found = true;
-                }
-                person = person -> next;
-            }
-
-            if(!found){
-                cout << "Person not found! \n";
-            }
-        }
-        
-        else
-            cout << "Nothing matched!\n";
-        
-        cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        cout << "\n\nPress Enter key to go back to main menu ... ";
-        string temp;
-        std::getline (std::cin, temp);
-        cout << "\033[2J\033[1;1H";
+    if (cin >> opt) {
+      cin.clear();
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    } else {
+      cin.clear();
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      cout << "Wrong option! " << endl;
+      return;
     }
+
+    // You may need these variables! Add more if you want!
+    string fname, lname, fileName, bdate;
+    cout << "\033[2J\033[1;1H";
+
+    if (opt == 1) {
+      // TODO: Complete me!
+      cout << "Saving network database \n";
+      cout << "Enter the name of the save file: ";
+      // Save the network database into the file with the given name,
+      // with each person saved in the format the save as printing out the
+      // person info, and people are delimited similar to "networkDB.txt" format
+      cout << "Network saved in " << fileName << endl;
+    } else if (opt == 2) {
+      // TODO: Complete me!
+      cout << "Loading network database \n";
+      // TODO: print all the files in this same directory that have
+      // "networkDB.txt" format print format: one filename one line. This step
+      // just shows all the available .txt file to load.
+      cout << "Enter the name of the load file: ";
+      // If file with name FILENAME does not exist:
+      cout << "File FILENAME does not exist!" << endl;
+      // If file is loaded successfully, also print the count of people in it:
+      cout << "Network loaded from " << fileName << " with " << count
+           << " people \n";
+    } else if (opt == 3) {
+      // TODO: Complete me!
+      // TODO: use push_front, and not push_back
+      // Add a new Person ONLY if it does not exists!
+      cout << "Adding a new person \n";
+    } else if (opt == 4) {
+      // TODO: Complete me!
+      // if found, cout << "Remove Successful! \n";
+      // if not found: cout << "Person not found! \n";
+      cout << "Removing a person \n";
+      cout << "First name: ";
+      cout << "Last name: ";
+    } else if (opt == 5) {
+      // TODO: Complete me!
+      // print the people with the given last name
+      // if not found: cout << "Person not found! \n";
+      cout << "Print people with last name \n";
+      cout << "Last name: ";
+    }
+
+    else
+      cout << "Nothing matched!\n";
+
+    cin.clear();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cout << "\n\nPress Enter key to go back to main menu ... ";
+    string temp;
+    std::getline(std::cin, temp);
+    cout << "\033[2J\033[1;1H";
+  }
 }
