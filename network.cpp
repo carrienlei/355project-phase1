@@ -223,30 +223,10 @@ void Network::showMenu() {
       // just shows all the available .txt file to load.
       cout << "Enter the name of the load file: ";
       // If file with name FILENAME does not exist:
-      cin >> fileName;
-            //setting found automatically to false
-            //only if file is found do we set to true
-      bool found = false;
-            //std::filesystem::path currentDir = std::filesystem::current_path();
-      for (const auto& entry : std::filesystem::directory_iterator(currentDir)) {
-                    // Check if the entry is a file and has the specified extension
-          if (entry.is_regular_file() && entry.path().extension() == extension) {
-              if (entry.path().filename() == fileName) {
-                  found = true;
-                  break:
-              }
-          }
-      }
-      if(!found){
-          // If file with name FILENAME does not exist: 
-          cout << "File FILENAME does not exist!" << endl;
-      }
-
+      cout << "File FILENAME does not exist!" << endl;
       // If file is loaded successfully, also print the count of people in it:
       cout << "Network loaded from " << fileName << " with " << count
            << " people \n";
-
-
         
     else if (opt == 3) {
       // TODO: Complete me!
