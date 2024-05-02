@@ -10,6 +10,7 @@ Email::Email(string type, string email_addr){
     this->email_addr = email_addr;
 }
 
+//Getting the email type and email address
 void Email::set_contact(){
     cout << "Enter the type of email address: ";
     std::getline(std::cin, type);
@@ -46,6 +47,7 @@ Phone::Phone(string type, string num){
     this->phone_num = num;
 }
 
+//Getting the type of phone number and the phone number
 void Phone::set_contact(){
 	cout <<"Enter the type of phone number: ";
 	std::getline(std::cin, type);
