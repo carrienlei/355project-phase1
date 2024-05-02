@@ -1,15 +1,14 @@
 #include "Person.h"
 #include "misc.h"
+// Assuming Date, Email, and Phone classes are fully defined elsewhere
 
 Person::Person(){
-    // Already completed
+    // Assume this initializes a Person with interactive input
     set_person();
 }
 
 Person::~Person(){
     delete birthdate;
-    // TODO: complete the method!
-    //This is creating an error because they were never dynmacially allocated
     delete email;
     delete phone;
     prev = NULL;
@@ -17,8 +16,6 @@ Person::~Person(){
 }
 
 Person::Person(string f_name, string l_name, string bdate, string email, string phone){
-    // TODO: Complete this method!
-    // phone and email strings are in full version
     this->f_name = f_name;
     this->l_name = l_name;
     this->birthdate = new Date(bdate);
@@ -27,18 +24,11 @@ Person::Person(string f_name, string l_name, string bdate, string email, string 
 }
 
 Person::Person(string filename){
-    // Already completed
     set_person(filename);
 }
 
 void Person::set_person(){
-    // prompts for the information of the user from the terminal
-    // first/last name can have spaces!
-    // date format must be "M/D/YYYY"
-    // We are sure user enters info in correct format.
-    // TODO: complete this method!
-
-    string temp, type, email_addr, num;
+        string temp, type, email_addr, num;
 
 	cout << "First Name: ";
     std::getline(std::cin,f_name);
@@ -50,6 +40,7 @@ void Person::set_person(){
     std::getline(std::cin,temp);
     birthdate = new Date(temp);
 
+    // Assuming file contains email and phone in a specific format
     cout << "Type of email address: ";
     std::getline(std::cin,type);
     cout << "Email address: ";
@@ -65,10 +56,6 @@ void Person::set_person(){
 
 
 void Person::set_person(string filename){
-    // TODO: Complete this method!
-
-    // Open the file <filename>
-    // Look at person_template.txt
     std::ifstream infile;
     infile.open(filename.c_str());
 
@@ -78,10 +65,10 @@ void Person::set_person(string filename){
     }
 
     if (infile.good()){
-      // Line #1: first name (can have spaces!)
+      // Line #1: first name
       std::getline(infile, f_name, '\n');
 
-      // Line #2: last name (can have spaces!)
+      // Line #2: last name
       std::getline(infile, l_name, '\n');
 
       // Line #3: date of birth in string format
@@ -99,7 +86,6 @@ void Person::set_person(string filename){
             }
         }
         std::getline(infile, num, '\n');
-        //cout << "TEST: " << type1 << " " << num << endl;
         phone = new Phone(type1, num);
 
         // Line #5: email and type
@@ -111,7 +97,6 @@ void Person::set_person(string filename){
             }
         }
         std::getline(infile, e, '\n');
-        //cout << "TEST: " << type2 << " " << e << endl;
         email = new Email(type2, e);
 
     }
@@ -119,7 +104,6 @@ void Person::set_person(string filename){
 }
 
 bool Person::operator==(const Person& rhs){
-    // Two connection are equal only if they have the same first name, last name and date of birth!
     if ((f_name == rhs.f_name) && (l_name == rhs.l_name) && (birthdate == rhs.birthdate))
 	    return true;
     else
@@ -130,18 +114,17 @@ bool Person::operator!=(const Person& rhs){
     return !(*this == rhs);
 }
 
-//ADDED FOR PHASE 2
 void Person::makeFriend(Person* newFriend)
 {
     myfriends.insert(myfriends.begin(), newFriend);
 }
 
 void Person::print_person(){
-    // Already implemented for you! Do not change!
+    // Print the person's information
     cout << l_name <<", " << f_name << endl;
     birthdate->print_date("Month D, YYYY");
-    email->print();
-    phone->print();
+    email->print(); // Assuming a print method exists
+    phone->print(); // Assuming a print method exists
     for (int i = 0; i < myfriends.size(); i++){
         Person* temp = myfriends[i];
         string code_name = codeName(temp->f_name, temp->l_name);
