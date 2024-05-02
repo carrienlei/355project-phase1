@@ -25,7 +25,9 @@ public:
     ~Network();
     void push_front(Person* newEntry);
     void push_back(Person* newEntry);
-    bool remove(string fname, string lname);
+    bool remove(string fname, string name);
+    void loadDB(string filename);
+    void saveDB(string filename);
     void printDB();
     void showMenu();
 };
