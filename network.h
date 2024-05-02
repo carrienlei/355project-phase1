@@ -2,7 +2,7 @@
 #define NETWORK_H
 
 #include "Person.h"
-#include "Date.h"
+#include "date.h"
 #include <stdlib.h>
 #include <fstream>
 #include <dirent.h>
