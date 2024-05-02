@@ -12,10 +12,8 @@ Email::Email(string type, string email_addr){
 
 void Email::set_contact(){
     cout << "Enter the type of email address: ";
-    // some code here
     std::getline(std::cin, type);
     cout << "Enter email address: ";
-    // some code here
     std::getline(std::cin, email_addr);
 }
 
