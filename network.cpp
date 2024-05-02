@@ -123,20 +123,23 @@ void Network::loadDB(string filename) {
 
 
 void Network::saveDB(string filename) {
-    ofstream file(filename);
-    Person* current = head;
+    ofstream outfile(filename);
+ 
 
-    while (current != NULL) {
-        file << current->f_name << endl
-             << current->l_name << endl
-             << current->birthdate->get_date() << endl
-             << current->email->get_contact() << endl
-             << current->phone->get_contact() << endl
-             << "--------------------" << endl;
-        current = current->next;
+    Person* person = head;
+    while(person != NULL){
+        outfile << person->l_name <<", " << person->f_name << endl;
+        outfile << person->birthdate->get_date() << endl;
+        outfile << person->phone->get_contact("full") << endl;
+        outfile << person->email->get_contact("full") << endl;
+        outfile << "--------------------" <<endl;
+        person = person->next;
     }
-    file.close();
+
+    outfile.close();
+
 }
+
 
 
 // ADDED FOR PHASE 2
