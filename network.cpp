@@ -1,5 +1,6 @@
 #include "network.h"
 #include "misc.h"
+#include <fstream>
 
 Network::Network(){
     head = NULL;
@@ -11,7 +12,7 @@ Network::Network(string fileName){
     // TODO: complete this method!
     // Implement it in one single line!
     // You may need to implement the load method before this!
-    // IN THEORY, THIS WOULD BE COMPLETED WITH LOADDB - NOT REQUIRED PER INSTRUCTION
+    loadDB(fileName);
 }
 
 Network::~Network(){
@@ -90,6 +91,83 @@ Person* Network::search(string fname, string lname){
     }
     return NULL;
 }
+
+void Network::loadDB(string filename){
+    ifstream inputfile(filename);
+    if (!inputfile) {
+        cerr << "Error opening file: " << filename << endl;
+        return;
+    }
+
+    // Clear existing list first
+    Person* current = head;
+    while (current != nullptr) {
+        Person* next = current->next;
+        delete current;
+        current = next;
+    }
+    head = nullptr;
+    tail = nullptr;
+    count = 0;  // Reset the count variable
+
+    string dashed_line, fname, lname, birthdate, email, phone;
+
+    // Skipping empty lines or separator lines
+    while (getline(inputfile, fname)) {
+        if (fname.empty() || fname[0] == '-') {
+            continue;  
+        }
+
+        getline(inputfile, lname);
+        getline(inputfile, birthdate);
+        getline(inputfile, email);
+        getline(inputfile, phone);
+        
+        // Consume the separator line
+        getline(inputfile, dashed_line);  // Assume there's a "--------------------" line after each record
+
+        // Adding each person to the network after loading by creating a person, if it fails will lmk 
+        try {
+            Person* newEntry = new Person(fname, lname, birthdate, email, phone);
+            this->push_back(newEntry);  // Add the new person to the list
+        } catch (const std::invalid_argument& e) {
+            cerr << "Error creating person: " << e.what() << endl;
+        }
+    }
+
+    inputfile.close();
+
+}
+void Network::saveDB(string filename){
+    ofstream outfile(filename);
+ 
+
+    Person* person = head;
+    while(person != NULL){
+        outfile << person->l_name <<", " << person->f_name << endl;
+        outfile << person->birthdate->get_date() << endl;
+        outfile << person->phone->get_contact("full") << endl;
+        outfile << person->email->get_contact("full") << endl;
+        outfile << "--------------------" <<endl;
+        person = person->next;
+    }
+
+    outfile.close();
+
+}
+
+
+void Network::printDB(){
+    cout << "Number of people: " << count << endl;
+    cout << "------------------------------" << endl;
+    Person* ptr = head;
+    while(ptr != NULL){
+        ptr->print_person();
+        cout << "------------------------------" << endl;
+        ptr = ptr->next;
+    }
+}
+
 
 // ADDED FOR PHASE 2
 Person* Network::search(string code){
