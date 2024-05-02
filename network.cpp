@@ -157,18 +157,6 @@ void Network::saveDB(string filename){
 }
 
 
-void Network::printDB(){
-    cout << "Number of people: " << count << endl;
-    cout << "------------------------------" << endl;
-    Person* ptr = head;
-    while(ptr != NULL){
-        ptr->print_person();
-        cout << "------------------------------" << endl;
-        ptr = ptr->next;
-    }
-}
-
-
 // ADDED FOR PHASE 2
 Person* Network::search(string code){
     Person* temp = head;
