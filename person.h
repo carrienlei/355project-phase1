@@ -5,7 +5,9 @@
 #include "date.h"
 #include "contact.h"
 #include "fstream"
+#include "misc.h"
 #include <vector>
+#include <iterator>
 using namespace std;
 
 class Person{
@@ -33,7 +35,7 @@ public:
     bool operator==(const Person& rhs);
     bool operator!=(const Person& rhs);
     void makeFriend(Person* newFriend);
+    void pprint_friends();
 };
-
 
 #endif
