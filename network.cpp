@@ -93,50 +93,19 @@ Person* Network::search(string fname, string lname){
 }
 
 void Network::loadDB(string filename){
-    ifstream inputfile(filename);
-    if (!inputfile) {
-        cerr << "Error opening file: " << filename << endl;
+    // TODO: Complete this method
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "File " << filename << " cannot be opened!" << endl;
         return;
     }
-
-    // Clear existing list first
-    Person* current = head;
-    while (current != nullptr) {
-        Person* next = current->next;
-        delete current;
-        current = next;
+    // Assuming a specific format for each line in the file representing a Person
+    string f_name, l_name, b_date, email, phone;
+    while(file >> f_name >> l_name >> b_date >> email >> phone) {
+        Person* newPerson = new Person(f_name, l_name, b_date, email, phone);
+        push_back(newPerson); // Or push_front, depending on desired list order
     }
-    head = nullptr;
-    tail = nullptr;
-    count = 0;  // Reset the count variable
-
-    string dashed_line, fname, lname, birthdate, email, phone;
-
-    // Skipping empty lines or separator lines
-    while (getline(inputfile, fname)) {
-        if (fname.empty() || fname[0] == '-') {
-            continue;  
-        }
-
-        getline(inputfile, lname);
-        getline(inputfile, birthdate);
-        getline(inputfile, email);
-        getline(inputfile, phone);
-        
-        // Consume the separator line
-        getline(inputfile, dashed_line);  // Assume there's a "--------------------" line after each record
-
-        // Adding each person to the network after loading by creating a person, if it fails will lmk 
-        try {
-            Person* newEntry = new Person(fname, lname, birthdate, email, phone);
-            this->push_back(newEntry);  // Add the new person to the list
-        } catch (const std::invalid_argument& e) {
-            cerr << "Error creating person: " << e.what() << endl;
-        }
-    }
-
-    inputfile.close();
-
+    file.close();
 }
 void Network::saveDB(string filename){
     ofstream outfile(filename);
