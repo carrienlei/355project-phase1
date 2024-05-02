@@ -296,13 +296,12 @@ void Network::showMenu(){
         cout << "\033[2J\033[1;1H";
 
         if (opt==1){
-            // TODO: Complete me!
-            // IN THEORY, THIS WOULD BE COMPLETED WITH SAVEDB - NOT REQUIRED PER INSTRUCTION
-            cout << "Saving network database \n";
-            cout << "Enter the name of the save file: ";
-            std::getline(std::cin,fileName);
-            cout << "Network saved in " << fileName << endl;
-        }
+	      cout << "Saving network database \n";
+	      cout << "Enter the name of the save file: ";
+	      cin >> fileName;
+	      saveDB(fileName);  
+	      cout << "Network saved in " << fileName << endl;
+	    } 
         else if (opt==2){
             // TODO: Complete me!
             cout << "Loading network database \n";
