@@ -18,15 +18,12 @@ private:
 	int day;
 	int month;
 	int year;
-    bool check_date();
 public:
     Date();
     Date(int day, int month, int year);
     Date(string str);
     bool set_date(string str);
     bool set_date(int day, int month, int year);
-    bool check_leap_date();
-    bool check_pal_date();
     void print_date(string type);
     bool operator==(const Date& rhs);
     bool operator!=(const Date& rhs);
