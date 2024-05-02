@@ -291,41 +291,24 @@ void Network::showMenu(){
 	      cout << "Network saved in " << fileName << endl;
 	    } 
         else if (opt==2){
-            // TODO: Complete me!
-            cout << "Loading network database \n";
-            // TODO: print all the files in this same directory that have ".db" format
-            struct dirent *d;
-            DIR *dr;
-            dr = opendir(".");
-            if(dr!=NULL){
-                cout<<"List of Files & Folders:\n";
-                for(d=readdir(dr); d!=NULL; d=readdir(dr)){
-                    string file_name = d->d_name;
-                    size_t found = file_name.find(".db");
-                    if (found != string::npos)
-                        cout << file_name << endl;
-                }
-                cout << endl;
-                closedir(dr);
-            }
-            else
-                cout<<"\nError Occurred!" << endl;
-
-            cout << "Enter the name of the load file: ";
-            std::getline(std::cin,fileName);
-
-            // If file with name FILENAME does not exist:
-            std::ifstream file(fileName);
-            if(!file.is_open()){
-                cout << "File FILENAME does not exist!" << endl;
-            }
-            else{
-                // If file is loaded successfully, also print the count of connections in it:
-                // IN THEORY, THIS WOULD BE COMPLETED WITH LOADDB - NOT REQUIRED PER INSTRUCTION
-                cout << "Network loaded from " << fileName << " with " << count << " connections \n";
-            }
-        }
-
+	        // TODO: Complete me!
+	        cout << "Loading network database \n";
+	        // TODO: print all the files in this same directory that have "networkDB.txt" format
+	        // print format: one filename one line.
+	        // This step just shows all the available .txt file to load.
+	        cout << "Enter the name of the load file: "; 
+	        getline(cin, fileName);
+	        // If file with name FILENAME does not exist: 
+	        ifstream load_fileName(fileName);
+	        if(!load_fileName){
+	            cout << "File " << fileName << " does not exist!" << endl;
+	        }   
+	        else{
+	            // If file is loaded successfully, also print the count of people in it: 
+	            loadDB(fileName);
+	            cout << "Network loaded from " << fileName << " with " << count << " people \n";
+	        }       
+	    }
         else if (opt == 3){
             // TODO: Complete me!
             // TODO: use push_front, and not push_back
