@@ -30,8 +30,8 @@ The `Network` class is defined in this file, representing the network management
 
 To use the network management system:
 
-1. Compile all the C++ files.
-2. Run the compiled program.
+1. Compile all the C++ files using: g++ contact.cpp date.cpp person.cpp network.cpp test_network.cpp misc.cpp -o test.o
+2. Run the compiled program using: ./test.o
 3. Follow the prompts in the menu to perform various operations, such as adding or removing connections, searching for persons, connecting persons as friends, and saving or loading network data.
 
 ## Contributors
