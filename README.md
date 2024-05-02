@@ -39,3 +39,11 @@ To use the network management system:
 - Elaina Huber (ehuber@usc.edu)
 - Carrie Lei (cnlei@usc.edu)
 - Donya Badamchi (badamchi@usc.edu)
+
+## Improvements/Next Steps
+
+- Implement more robust error handling and input validation to enhance user experience and prevent unexpected behavior.
+- Add support for additional features such as group management, event scheduling, or messaging within the network.
+- Improve the efficiency of search and sorting algorithms to handle larger datasets more efficiently.
+- Enhance the user interface with graphical elements for a more intuitive interaction experience.
+- Conduct thorough testing to identify and fix any potential bugs or issues.
