@@ -1,25 +1,23 @@
 #include "Date.h"
+#include <iostream>
 
 Date::Date(){
     // cout << "Default constructor called! " << endl;
     day = 1;
     month = 1;
-    year = 1970;
+    year = 1900;
 }
-
 
 Date::Date(int day, int month, int year){
     // cout << "Constructor with integer arguments is called!" << endl;
     set_date(day, month, year);
 }
 
-
-Date::Date(string str){
+Date::Date(string date_str){
     // input format is M/D/YYYY
     // cout << "Constructor wtih string argument is called" << endl;
-    set_date(str);
+    set_date(date_str);
 }
-
 
 bool Date::operator==(const Date& rhs){
     if ( (day == rhs.day) &&
@@ -30,94 +28,11 @@ bool Date::operator==(const Date& rhs){
         return false;
 }
 
-
 bool Date::operator!=(const Date& rhs){
     return !(*this == rhs);
 }
 
-
-bool Date::check_date(){
-    // Leap years are those years divisible by 4, except for century years whose number is not divisible by 400.
-
-	if (day<1)
-		return false;
-
-	// 31: Jan March May July August October December
-	// 30: April, June, September, November,
-	// 29: Feb
-
-	switch (month){
-		case Jan:
-		case Mar:
-		case May:
-		case Jul:
-		case Aug:
-		case Oct:
-		case Dec:
-		if (day>31)
-			return false;
-		break;
-
-		case Apr:
-		case Jun:
-		case Sep:
-		case Nov:
-		if (day > 30)
-			return false;
-		break;
-
-		case Feb:
-		if (day > 29)
-			return false;
-        else if (day == 28 & year%4 == 0){
-            if (year%100 == 0 & year%400 == 0)
-                return false;
-            else
-                return true;
-        }
-        else
-            return true;
-		break;
-
-		default:
-		return false;
-	}
-	return true;
-}
-
-bool Date::check_leap_date(){
-    if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
-bool Date::check_pal_date(){
-    // FORMAT DDMMYYYY
-    string d = to_string(day);
-    if (day<10){
-        d = "0" + d;
-    }
-    string m = to_string(month);
-    if (month<10){
-        m = "0" + m;
-    }
-    string y = to_string(year);
-    string str = d + m + y;
-    cout << "With format of DDMMYYYY: " << str << endl;
-
-    int l = str.length();
-    for (int i = 0; i < l; i++){
-        if(str[i] != str[l-i-1]){
-           return false;
-        }
-    }
-    return true;
-}
-
-bool Date::set_date(string str){
+bool Date::set_date(string date_str){
     // input format is M/D/YYYY
 
     month = atoi(str.substr(0, str.find('/')).c_str());
@@ -140,10 +55,6 @@ bool Date::set_date(string str){
 }
 
 bool Date::set_date(int day, int month, int year){
-    // We could simply use other variable names for the argument of this method, like d, m, and y.
-    // But we intentionally used the same names as the class attributes, to show how the scope of a variable works
-    // Moreover, understand how we are using "this->" in this method!
-    // TODO: there is a bug in this method! Fix it!
     this->month = month;
     this->day = day;
     this->year = year;
@@ -159,7 +70,7 @@ bool Date::set_date(int day, int month, int year){
     return true;
 }
 
-void Date::print_date(string type){
+void Date::print_date(string format){
 	string month_str;
 	switch( month ) {
 		case Jan: month_str = "January"; break;
