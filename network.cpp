@@ -277,33 +277,23 @@ void Network::showMenu(){
 	    } 
         else if (opt==2){
 		// TODO: Complete me!
-            // TODO: print all the files in this same directory that have "networkDB.txt" format
-            // print format: one filename one line.
-            // This step just shows all the available .txt file to load.
-            
-            cout << "Loading network database \n";
-	    cout << "Available network database files: \n";
-	    
-	    // Use the filesystem library to iterate through files in the current directory
-	    for(const auto& entry : fs::directory_iterator(".")) {
-		if(entry.path().filename().string().find("networkDB.txt") != std::string::npos) {
-		    cout << entry.path().filename().string() << endl;
-		}
+		cout << "Loading network database \n";
+		// TODO: print all the files in this same directory that have "networkDB.txt" format
+		// print format: one filename one line.
+		// This step just shows all the available .txt file to load.
+		cout << "Enter the name of the load file: "; 
+		getline(cin, fileName);
+		// If file with name FILENAME does not exist: 
+		ifstream load_fileName(fileName);
+		if(!load_fileName){
+		    cout << "File " << fileName << " does not exist!" << endl;
+		}   
+		else{
+		    // If file is loaded successfully, also print the count of people in it: 
+		    loadDB(fileName);
+		    cout << "Network loaded from " << fileName << " with " << count << " people \n";
+		}       
 	    }
-	    
-	    cout << "Enter the name of the load file: ";
-	    getline(cin, fileName);
-	    
-	    // Check if the file exists before attempting to load
-	    if (!fs::exists(fileName)) {
-		cout << "File " << fileName << " does not exist!" << endl;
-	    } 
-	    else {
-		loadDB(fileName); // Make sure this function updates `count` correctly
-		cout << "Network loaded from " << fileName << " with " << count << " people \n";
-	    }
-           
-        }
         else if (opt == 3){
             // TODO: Complete me!
             // TODO: use push_front, and not push_back
