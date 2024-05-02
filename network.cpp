@@ -92,37 +92,50 @@ Person* Network::search(string fname, string lname){
     return NULL;
 }
 
-void Network::loadDB(string filename){
-    // TODO: Complete this method
+void Network::loadDB(string filename) {
     ifstream file(filename);
-    if (!file.is_open()) {
-        cout << "File " << filename << " cannot be opened!" << endl;
-        return;
+    string line, fname, lname, bdate, email, phone;
+
+    // Clear network
+    while (head != NULL) {
+        Person* temp = head;
+        head = head->next;
+        delete temp;
     }
-    // Assuming a specific format for each line in the file representing a Person
-    string f_name, l_name, b_date, email, phone;
-    while(file >> f_name >> l_name >> b_date >> email >> phone) {
-        Person* newPerson = new Person(f_name, l_name, b_date, email, phone);
-        push_back(newPerson); // Or push_front, depending on desired list order
+    tail = NULL;
+    count = 0;
+
+    if (file.is_open()) {
+        while (getline(file, fname)) {
+            getline(file, lname);
+            getline(file, bdate);
+            getline(file, email);
+            getline(file, phone);
+            getline(file, line); // Read the delimiter line
+
+            Person* newPerson = new Person(fname, lname, bdate, email, phone);
+            push_back(newPerson);
+        }
+        file.close();
+        
+    }
+}
+
+
+void Network::saveDB(string filename) {
+    ofstream file(filename);
+    Person* current = head;
+
+    while (current != NULL) {
+        file << current->f_name << endl
+             << current->l_name << endl
+             << current->birthdate->get_date() << endl
+             << current->email->get_contact() << endl
+             << current->phone->get_contact() << endl
+             << "--------------------" << endl;
+        current = current->next;
     }
     file.close();
-}
-void Network::saveDB(string filename){
-    ofstream outfile(filename);
- 
-
-    Person* person = head;
-    while(person != NULL){
-        outfile << person->l_name <<", " << person->f_name << endl;
-        outfile << person->birthdate->get_date() << endl;
-        outfile << person->phone->get_contact("full") << endl;
-        outfile << person->email->get_contact("full") << endl;
-        outfile << "--------------------" <<endl;
-        person = person->next;
-    }
-
-    outfile.close();
-
 }
 
 
