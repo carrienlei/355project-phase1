@@ -1,44 +1,40 @@
-
 #ifndef CONTACT_H
 #define CONTACT_H
 
-#include <iostream>
+#include "Date.h"
+#include "fstream"
 #include <string>
-#include <algorithm> //added
-using namespace std;
 
 class Contact {
-    // TODO: private or protected? Look at your children!
-    friend class Person;
-    friend class Network;
-protected:
-	string type;
 public:
-	virtual void print() = 0;
-    	virtual string get_contact(string style="full") = 0;
-	virtual void set_contact() = 0;
+    string type;
+    virtual void set_contact() = 0;
+    virtual string get_contact(string style = "full") = 0;
+    virtual void print() = 0;
 };
 
-class Email: public Contact{
+class Email : public Contact {
+    friend class Network;
 private:
     string email_addr;
 public:
+    Email();
     Email(string type, string email_addr);
-    void set_contact(); 
-    string get_contact(string style="full");
+    void set_contact();
+    string get_contact(string style);
     void print();
 };
 
-
-class Phone: public Contact{
+class Phone : public Contact {
+    friend class Network;
 private:
-	string phone_num; 
+    string phone_num;
 public:
-    Phone(string type, string phone_number);
+    Phone();
+    Phone(string type, string num);
     void set_contact();
-    string get_contact(string style = "full") ;
+    string get_contact(string style);
     void print();
-
 };
 
 #endif
