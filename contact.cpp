@@ -6,7 +6,6 @@ Email::Email(){
 }
 
 Email::Email(string type, string email_addr){
-    // TODO: Complete me!
     this->type = type;
     this->email_addr = email_addr;
 }
