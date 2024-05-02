@@ -1,30 +1,33 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include "person.h"
-#include "date.h"
-// You may need to add more libraries 
+#include "Person.h"
+#include "Date.h"
+// You may need to add more libraries
 #include <stdlib.h>
-class Network{
+#include <fstream>
+#include <dirent.h>
+#include <string>
+#include <limits>
 
-    private:
-        Person* head;
-        Person* tail;
-        int count; 
-        Person* search(Person* searchEntry);
-        Person* search(string fname, string lname);
-        
-    public:
-        Network();
-        Network(string fileName);
-        ~Network();
-        void printDB();
-        void loadDB(string filename);
-        void saveDB(string filename);
-        void push_front(Person* newEntry);
-        void push_back(Person* newEntry);
-        bool remove(string fname, string lname);
-        void showMenu();
+class Network{
+private:
+    Person* head;
+    Person* tail;
+    int count;
+    Person* search(Person* searchEntry);
+    Person* search(string fname, string lname);
+    Person* search(string code);
+
+public:
+    Network();
+    Network(string fileName);
+    ~Network();
+    void push_front(Person* newEntry);
+    void push_back(Person* newEntry);
+    bool remove(string fname, string lname);
+    void printDB();
+    void showMenu();
 };
 
 #endif
