@@ -36,6 +36,6 @@ To use the network management system:
 
 ## Contributors
 
-- Elaina Huber
-- Carrie Lei
-- Donya Badamchi
+- Elaina Huber (ehuber@usc.edu)
+- Carrie Lei (cnlei@usc.edu)
+- Donya Badamchi (badamchi@usc.edu)
