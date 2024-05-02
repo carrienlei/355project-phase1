@@ -1,7 +1,7 @@
 #ifndef CONTACT_H
 #define CONTACT_H
 
-#include "Date.h"
+#include "date.h"
 #include "fstream"
 #include <string>
 
