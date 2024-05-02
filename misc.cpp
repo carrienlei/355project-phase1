@@ -15,6 +15,7 @@ void printMe(string type){
 }
 
 string codeName(string str1, string str2){
+    // Concatenate str1 and str2, remove spaces, and make all letters lowercase
     string name = str1 + str2;
     name.erase(remove(name.begin(), name.end(), ' '), name.end());
     transform(name.begin(), name.end(), name.begin(), ::tolower);
